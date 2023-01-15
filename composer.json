@@ -1,0 +1,11 @@
+{
+    "name": "decocodes/bref-test",
+    "autoload": {
+        "psr-4": {
+            "Decocodes\\BrefTest\\": "app/"
+        }
+    },
+    "require": {
+        "bref/bref": "^1.7"
+    }
+}
