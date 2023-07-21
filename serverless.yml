@@ -3,20 +3,31 @@ service: app
 provider:
     name: aws
     region: us-east-1
-    runtime: provided.al2
+    environment:
+        BREF_PING_DISABLE: 1
 
 plugins:
     - ./vendor/bref/bref
 
 functions:
     api:
-        handler: index.php
+        handler: api.php
         description: ''
+        runtime: php-82-fpm
         timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
-        layers:
-            - ${bref:layer.php-82-fpm}
         events:
-            -   httpApi: '*'
+#            - httpApi: '*'
+            - httpApi:
+                  method: GET
+                  path: /cep/{cep}
+            - schedule:
+                  rate: rate(5 minutes)
+                  input:
+                      warmer: true
+    hello:
+        handler: hello.php
+        description: ''
+        runtime: php-82
 
 # Exclude files from deployment
 package:
