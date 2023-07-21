@@ -31,4 +31,4 @@ WORKDIR /usr/src/app
 
 USER ${UID}:${GID}
 
-ENTRYPOINT php -S 0.0.0.0:8080 api.php
+ENTRYPOINT php -S 0.0.0.0:8080 api-withdraw.php
