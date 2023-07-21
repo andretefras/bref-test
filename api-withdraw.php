@@ -1,15 +1,19 @@
 <?php
 
-// This is a PHP file example.
-// Replace it with your application.
+require __DIR__ . '/vendor/autoload.php';
 
-$lambdaContext = json_decode($_SERVER['LAMBDA_INVOCATION_CONTEXT'], true);
-$requestContext = json_decode($_SERVER['LAMBDA_REQUEST_CONTEXT'], true);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
 
-echo "<pre>";
-var_dump($lambdaContext, $requestContext);
-echo "</pre>";
+$lambda = new AsyncAws\Lambda\LambdaClient([
+    'accessKeyId' => $_ENV['AWS_KEY'],
+    'accessKeySecret' => $_ENV['AWS_SECRET'],
+    'region' => $_ENV['AWS_REGION'],
+]);
 
-// Call process-withdraw function
+$result = $lambda->invoke([
+    'FunctionName' => 'process-withdraw',
+    'Payload' => json_encode(['value' => 5000]),
+]);
 
-
+echo $result->getPayload();
