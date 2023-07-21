@@ -19,7 +19,7 @@ functions:
 #            - httpApi: '*'
             - httpApi:
                   method: GET
-                  path: /withdraw/{value}
+                  path: /{value}
             - schedule:
                   rate: rate(5 minutes)
                   input:

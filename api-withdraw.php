@@ -2,6 +2,15 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
+$lambdaContext = json_decode($_SERVER['LAMBDA_INVOCATION_CONTEXT'], true);
+$requestContext = json_decode($_SERVER['LAMBDA_REQUEST_CONTEXT'], true);
+
+echo "<pre>";
+var_dump($lambdaContext, $requestContext);
+echo "</pre>";
+
+$arguments = explode('/', $requestContext['http']['path']);
+
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
@@ -12,8 +21,10 @@ $lambda = new AsyncAws\Lambda\LambdaClient([
 ]);
 
 $result = $lambda->invoke([
-    'FunctionName' => 'process-withdraw',
-    'Payload' => json_encode(['value' => 5000]),
+    'FunctionName' => 'app-dev-process-withdraw',
+    'Payload' => json_encode(['value' => $arguments[1]]),
 ]);
 
-echo $result->getPayload();
+// var_dump($result->info());
+
+var_dump($result->getPayload());
